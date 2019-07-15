@@ -1,0 +1,19 @@
+body{}
+h1,h2,h3,h4{}
+p{}
+div{}
+
+.form{
+  display: inline-block;
+}
+
+.field-element{
+    padding: 5px 0 5px 0
+}
+
+.form label {
+  margin-right: 5px
+}
+.form input {
+  margin-left: 5px
+}
