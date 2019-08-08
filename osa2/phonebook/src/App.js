@@ -17,7 +17,7 @@ export const App = () => {
 
   useEffect(() => {
     personService.getAll().then(response => {
-      setPersons(response.data)
+      setPersons(response.data);
     });
   }, []);
 
@@ -51,15 +51,12 @@ export const App = () => {
   };
   const onClickRemovePerson = event => {
     event.preventDefault();
-const id =event.target.value;
-persons.filter((value, index, arr)=>{
-  console.log(value.id)
-  return value.id ===id
-})
-    personService.remove(id)
-
-    
-    
+    const id = event.target.value;
+    persons.filter((value, index, arr) => {
+      console.log(value.id);
+      return value.id === id;
+    });
+    personService.remove(id);
   };
 
   return (
