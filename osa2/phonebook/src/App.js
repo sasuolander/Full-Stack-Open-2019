@@ -3,7 +3,7 @@ import "./css/App.css";
 import { AddRecord } from "./component/AddRecord";
 import { FilterBar } from "./component/FilterBar";
 import { ListOfRecord } from "./component/ListOfRecord";
-import { AlertBanner } from "./component/AlertBanner";
+import { AlertBanner, RemovedBanner,AddedBanner } from "./component/AlertBanner";
 import personService from "./service/personService";
 
 export const App = () => {
@@ -11,14 +11,14 @@ export const App = () => {
     [name, setName] = useState(""),
     [phonenumber, setPhonenumber] = useState(""),
     [filter, setFilter] = useState(""),
-    [visible, setVisibility] = useState("none");
-
-  const url = "http://localhost:3001/persons";
+    [visibleAlert, setVisibilityAlert] = useState("none"),
+    [visibleRemove, setVisibilityRemove] = useState("none"),
+    [removedName, setRemovedName] = useState(""),
+    [visibleAdded, setVisibilityAdded] = useState("none"),
+    [addedName, setAddedName] = useState("");
 
   useEffect(() => {
-    personService.getAll().then(response => {
-      setPersons(response.data);
-    });
+    personService.getAll().then(data => setPersons(data));
   }, []);
 
   const onChangeFilter = event => {
@@ -27,7 +27,8 @@ export const App = () => {
   };
 
   const onChangeName = event => {
-    setVisibility("none");
+    setVisibilityAlert("none");
+    setVisibilityAdded("none")
     const { value } = event.target;
     setName(value);
   };
@@ -39,30 +40,49 @@ export const App = () => {
   const onClickPerson = event => {
     event.preventDefault();
     const id = persons.length,
-      objectPerson = { id: id, name: name, phonenumber: phonenumber };
-
+      objectPerson = { id: id + 1, name: name, phonenumber: phonenumber };
     if (!persons.find(person => person.name === objectPerson.name)) {
-      personService.create(objectPerson).then(response => {
-        setPersons([...persons, response.data]);
+      personService.create(objectPerson).then(data => {
+        setAddedName(objectPerson.name)
+        setVisibilityAdded("")
+        setPersons([...persons, data]);
       });
     } else {
-      setVisibility("");
+      setVisibilityAlert("");
     }
   };
   const onClickRemovePerson = event => {
-    event.preventDefault();
-    const id = event.target.value;
-    persons.filter((value, index, arr) => {
-      console.log(value.id);
-      return value.id === id;
-    });
-    personService.remove(id);
+    setVisibilityRemove("none");
+    const id = event.target.value,
+      removedNameLocal = persons.find(person => {
+        return person.id == id;
+      });
+
+    setRemovedName(removedNameLocal.name);
+    personService
+      .remove(id)
+      .then(response => {
+        let array=persons.filter((value, index, arr) => {
+          return value.id === id;
+        });
+        setPersons(array)
+      })
+      .catch(error => {
+        setVisibilityRemove("");
+       let array= persons.filter((value, index, arr) => {
+          return value.id !== id;
+        });
+        setPersons(array)
+        console.log(error);
+      });
   };
 
   return (
     <React.Fragment>
       <h1>phonebook app</h1>
-      <AlertBanner name={name} visible={visible} />
+      <AlertBanner name={name} visible={visibleAlert} />
+      <RemovedBanner name={removedName} visible={visibleRemove} />
+      <AddedBanner name={addedName} visible={visibleAdded} />
       <FilterBar onChange={onChangeFilter} filter={filter} />
       <AddRecord
         onChangeName={onChangeName}

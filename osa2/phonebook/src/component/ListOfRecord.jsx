@@ -1,7 +1,6 @@
 import React from "react";
 
 export const ListOfRecord = ({ persons,onClickRemovePerson }) => {
-    console.log("ListOfRecord",persons)
   const list = persons.map(person => {
     return (
       <tr key={person.id}>

@@ -17,3 +17,14 @@ div{}
 .form input {
   margin-left: 5px
 }
+
+.styleSheetBanner {
+  border-style: solid;
+  border-radius: 25px; 
+  border-color: orangered;
+  background-color: yellow
+}
+.styleSheetBanner p {
+  text-align: center;
+  font-size: 20px;
+}

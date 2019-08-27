@@ -1,19 +1,14 @@
 {
   "persons": [
     {
-      "id": 3,
-      "name": "",
+      "id": 1,
+      "name": "tim",
       "phonenumber": ""
     },
     {
-      "id": 4,
-      "name": "d",
+      "id": 2,
+      "name": "timu",
       "phonenumber": ""
-    },
-    {
-      "id": 5,
-      "name": "kl",
-      "phonenumber": "lö"
     }
   ]
 }
