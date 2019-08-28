@@ -3,7 +3,7 @@ import fs from "fs";
 const router = express.Router();
 
 const data=fs.readFileSync("./db.json")
-const db =JSON.parse(data);
+ export const db =JSON.parse(data);
 
 
 
