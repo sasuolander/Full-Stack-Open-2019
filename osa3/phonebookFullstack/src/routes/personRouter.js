@@ -1,18 +1,24 @@
+require('dotenv').config()
 import express from "express";
 import { db } from "./../app";
 import fs from "fs";
+import personService from "./../service/personService"
+
 
 const router = express.Router();
 const dir = `${__dirname}/../../db.json`;
 
 router.get("/persons", (req, res, next) => {
   // res.writeHead(200,{'content-stype':'application/json'});
-  res.json({
-    status: "success",
-    data: {
-      persons: db
-    }
-  });
+  const persons = personService.getAll();
+  persons.then(result=>{
+    res.json({
+      status: "success",
+      data: {
+        persons: result
+      }
+    });
+  })
 });
 router.get("/persons/:id", (req, res, next) => {
   const personID = req.params.id * 1,

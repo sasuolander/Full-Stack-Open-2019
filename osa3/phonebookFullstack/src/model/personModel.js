@@ -1,12 +1,12 @@
+require('dotenv').config()
 import mongoose from "mongoose"
+import connection from "./../app"
 
 const person ={id:Number,
 name: String,
-phonenumber: Number
+phonenumber: String
 }
 
 const schemaPerson = new mongoose.Schema(person);
 
-const personModel = mongoose.model("person",schemaPerson)
-
-export default {personModel}
+export const personModel = mongoose.model("person",schemaPerson,"persons")

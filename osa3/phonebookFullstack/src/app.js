@@ -19,10 +19,10 @@ const app = express();
 app.set("views", join(__dirname, "views"));
 app.set("view engine", "pug");
 
-const URL = `${process.env.LOCALDATABASECONNECTION}/myapp`;
+const URL = `${process.env.LOCALDATABASECONNECTION}/phonebook`;
 console.log(URL)
 
-mongoose.connect(URL, {useNewUrlParser: true}).then(result => {
+export const connection =mongoose.connect(URL, {useNewUrlParser: true}).then(result => {
   console.log('connected to MongoDB');
 })
 .catch((error) => {
