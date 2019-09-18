@@ -1,3 +1,4 @@
+require('dotenv').config()
 import createError from "http-errors";
 import express from "express";
 import { join } from "path";
@@ -9,12 +10,24 @@ import personRouter from "./routes/personRouter";
 import  path from "path";
 import fs from "fs";
 import cors from "cors"
+import mongoose from "mongoose"
+
 
 const app = express();
 
 // view engine setup
 app.set("views", join(__dirname, "views"));
 app.set("view engine", "pug");
+
+const URL = `${process.env.LOCALDATABASECONNECTION}/myapp`;
+console.log(URL)
+
+mongoose.connect(URL, {useNewUrlParser: true}).then(result => {
+  console.log('connected to MongoDB');
+})
+.catch((error) => {
+  console.log('error connecting to MongoDB:', error.message)
+});
 
 const data = fs.readFileSync("./db.json");
 export const db = JSON.parse(data);
