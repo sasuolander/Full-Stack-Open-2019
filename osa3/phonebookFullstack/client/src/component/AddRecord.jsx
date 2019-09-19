@@ -1,7 +1,6 @@
 import React from "react";
 
 export const AddRecord = ({ onClick, onChangeName,onChangePhonenumber,phonenumber,name }) => {
-  //console.log(newPerson)
   return (
     <div>
       <form className="form">

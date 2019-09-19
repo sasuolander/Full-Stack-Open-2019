@@ -3,8 +3,13 @@ import "./css/App.css";
 import { AddRecord } from "./component/AddRecord";
 import { FilterBar } from "./component/FilterBar";
 import { ListOfRecord } from "./component/ListOfRecord";
-import { AlertBanner, RemovedBanner,AddedBanner } from "./component/AlertBanner";
+import {
+  AlertBanner,
+  RemovedBanner,
+  AddedBanner
+} from "./component/AlertBanner";
 import personService from "./service/personService";
+import useForceUpdate from "use-force-update";
 
 export const App = () => {
   const [persons, setPersons] = useState([]),
@@ -17,8 +22,11 @@ export const App = () => {
     [visibleAdded, setVisibilityAdded] = useState("none"),
     [addedName, setAddedName] = useState("");
 
+  const forceUpdate = useForceUpdate();
+
   useEffect(() => {
-    personService.getAll().then(data =>setPersons(data.persons));
+    personService.getAll().then(data => console.log(data));
+    personService.getAll().then(data => setPersons(data.persons));
   }, []);
 
   const onChangeFilter = event => {
@@ -28,7 +36,7 @@ export const App = () => {
 
   const onChangeName = event => {
     setVisibilityAlert("none");
-    setVisibilityAdded("none")
+    setVisibilityAdded("none");
     const { value } = event.target;
     setName(value);
   };
@@ -39,13 +47,12 @@ export const App = () => {
 
   const onClickPerson = event => {
     event.preventDefault();
-    const id = persons.length,
-      objectPerson = { id: id + 1, name: name, phonenumber: phonenumber };
+    const objectPerson = { name: name, phonenumber: phonenumber };
     if (!persons.find(person => person.name === objectPerson.name)) {
       personService.create(objectPerson).then(data => {
-        setAddedName(objectPerson.name)
-        setVisibilityAdded("")
-        setPersons([...persons, data]);
+        setAddedName(objectPerson.name);
+        setVisibilityAdded("");
+        setPersons([...persons, data.person]);
       });
     } else {
       setVisibilityAlert("");
@@ -55,24 +62,31 @@ export const App = () => {
     setVisibilityRemove("none");
     const id = event.target.value,
       removedNameLocal = persons.find(person => {
-        return person.id == id;
+        return person.id === id;
       });
 
     setRemovedName(removedNameLocal.name);
     personService
       .remove(id)
       .then(response => {
-        let array=persons.filter((value, index, arr) => {
-          return value.id === id;
-        });
-        setPersons(array)
+        const removedElement = persons.indexOf(id);
+        console.log(removedElement);
+        try {
+          let array = persons.filter((value, index, arr) => {
+            console.log("value", value);
+            return value.id == id;
+          });
+          setPersons(array);
+        } catch (error) {
+          console.log(error);
+        }
       })
       .catch(error => {
         setVisibilityRemove("");
-       let array= persons.filter((value, index, arr) => {
+        let array = persons.filter((value, index, arr) => {
           return value.id !== id;
         });
-        setPersons(array)
+        setPersons(array);
         console.log(error);
       });
   };
