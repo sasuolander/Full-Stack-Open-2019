@@ -4,6 +4,7 @@ import validator from  "mongoose-unique-validator"
 import connection from "./../app"
 
 const person ={
+    
 name: {type:String,unique: true},
 phonenumber: String
 }
@@ -11,5 +12,13 @@ phonenumber: String
 const schemaPerson = new mongoose.Schema(person);
 
 schemaPerson.plugin(validator)
+
+schemaPerson.set('toJSON', {
+    transform: (document, returnedObject) => {
+      returnedObject.id = returnedObject._id.toString()
+      delete returnedObject._id
+      delete returnedObject.__v
+    }
+  })
 
 export const personModel = mongoose.model("person",schemaPerson,"persons")

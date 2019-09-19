@@ -6,42 +6,52 @@ import personService from "./../service/personService";
 
 const router = express.Router();
 const dir = `${__dirname}/../../db.json`;
+const { getAll, findByID, save, update, remove } = personService;
 
 router.get("/persons", (req, res, next) => {
-  // res.writeHead(200,{'content-stype':'application/json'});
-  const persons = personService.getAll();
-  persons.then(result => {
-    res.json({
-      status: "success",
-      data: {
-        persons: result
-      }
-    });
-  });
+  getAll().then(
+    result => {
+      res.status(200).json({
+        status: "success",
+        data: {
+          persons: result
+        }
+      });
+    },
+    reject => {
+      res.status(404).json({
+        status: "fail",
+        info: "search failed"
+      });
+    }
+  );
 });
 router.get("/persons/:id", (req, res, next) => {
-  const personID = req.params.id * 1,
-    person = db.find(person => person.id === personID);
-
-  if (person === undefined) {
-    //console.log("undefined")
-    res.status(404).send("not found");
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      person: person
+  findByID(req.params.id).then(
+    result => {
+      res.status(200).json({
+        status: "success",
+        data: {
+          persons: result
+        }
+      });
+    },
+    reject => {
+      res.status(404).json({
+        status: "fail",
+        info: "search failed"
+      });
     }
-  });
+  );
 });
+
 router.post("/persons/", (req, res, next) => {
-  const newPerson = Object.assign(req.body);
-  const nameAndPhonenumberIsFound =
-    req.body.name !== undefined && req.body.phonenumber !== undefined;
+  const newPerson = Object.assign(req.body),
+    { name, phonenumber } = req.body,
+    nameAndPhonenumberIsFound = name !== undefined && phonenumber !== undefined;
 
   if (nameAndPhonenumberIsFound) {
-    personService.save(newPerson).then(
+    save(newPerson).then(
       output => {
         res.status(201).json({
           status: "success",
@@ -60,7 +70,7 @@ router.post("/persons/", (req, res, next) => {
   } else {
     res.status(400).json({
       status: "fail",
-      info: "name or phonenumber is not found"
+      info: "name or phonenumber field is not found"
     });
   }
 });
@@ -68,15 +78,22 @@ router.post("/persons/", (req, res, next) => {
 //router.post("/person/:id", (req, res, next) => {});
 
 router.delete("/persons/:id", (req, res, next) => {
-  const personID = req.params.id * 1;
-  const personsList = db.filter(person => person.id != personID);
-  fs.writeFile(dir, JSON.stringify(personsList), err => {
-    console.log("err", err);
-    res.status(201).json({
-      status: "success",
-      data: null
-    });
-  });
+  const {id}=req.params;
+  remove(id).then(
+    result=>{
+      res.status(202).json({
+        status: "success",
+        data: null
+      });
+    },
+    reject=>{
+      res.status(400).json({
+        status: "fail",
+        info: "failed to remove element"
+      });
+    }
+  )
+ 
 });
 
 export default router;
