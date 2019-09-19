@@ -40,26 +40,44 @@ router.post("/persons/", (req, res, next) => {
   const newId = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
-  const arrayOfName = db.map(person => person.name);
+  const newPerson = Object.assign({ id: newId(1, 900) }, req.body);
   const nameAndPhonenumberIsFound=req.body.name!==undefined&&req.body.phonenumber!==undefined
+  
 
-if(nameAndPhonenumberIsFound){
+  if(nameAndPhonenumberIsFound){
+    console.log("start")
+    personService.create(newPerson).then((output)=>{
+      console.log(output)
+    }
+     
+    )
+    console.log("end")
+  }else{
+    res.status(400).json({
+      status: "fail",
+      info: "name or phonenumber is not found"
+    });
+  }
+
+/* if(nameAndPhonenumberIsFound){
   if (
     !arrayOfName.find(element => {
       return element == req.body.name;
     })
   ) {
-    console.log(arrayOfName);
+    
     const newPerson = Object.assign({ id: newId(1, 900) }, req.body);
-    const persons = db.push(newPerson);
-    fs.writeFile(dir, JSON.stringify(persons), err => {
+    
+    
+
+
       res.status(201).json({
         status: "success",
         data: {
           person: newPerson
         }
       });
-    });
+    
   } else {
     res.status(400).json({
       status: "fail",
@@ -71,7 +89,7 @@ if(nameAndPhonenumberIsFound){
     status: "fail",
     info: "name or phonenumber is not found"
   });
-}
+} */
 
   
 });
