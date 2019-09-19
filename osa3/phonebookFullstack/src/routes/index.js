@@ -1,6 +1,7 @@
-require('dotenv').config()
+require("dotenv").config();
 import express from "express";
-import { db } from "./../app";
+import personService from "./../service/personService";
+
 const router = express.Router();
 
 /* GET home page. */
@@ -8,10 +9,16 @@ router.get("/", (req, res, next) => {
   res.render("index", { title: "PhonebookAPP" });
 });
 router.get("/info", (req, res, next) => {
-  //console.log(db)
-  const count = db.length;
   const date = new Date();
-  res.render("info", { count: count, timetamp: date });
+  personService.getAll().then(
+    result => {
+      console.log(result);
+      res.render("info", { count: result.length, timetamp: date });
+    },
+    reject => {
+      res.render("info", { count: 0, timetamp: date });
+    }
+  );
 });
 
 export default router;

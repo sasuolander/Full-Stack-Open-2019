@@ -1,11 +1,8 @@
 require("dotenv").config();
 import express from "express";
-import { db } from "./../app";
-import fs from "fs";
 import personService from "./../service/personService";
 
 const router = express.Router();
-const dir = `${__dirname}/../../db.json`;
 const { getAll, findByID, save, update, remove } = personService;
 
 router.get("/persons", (req, res, next) => {
@@ -78,22 +75,21 @@ router.post("/persons/", (req, res, next) => {
 //router.post("/person/:id", (req, res, next) => {});
 
 router.delete("/persons/:id", (req, res, next) => {
-  const {id}=req.params;
+  const { id } = req.params;
   remove(id).then(
-    result=>{
+    result => {
       res.status(202).json({
         status: "success",
         data: null
       });
     },
-    reject=>{
+    reject => {
       res.status(400).json({
         status: "fail",
         info: "failed to remove element"
       });
     }
-  )
- 
+  );
 });
 
 export default router;

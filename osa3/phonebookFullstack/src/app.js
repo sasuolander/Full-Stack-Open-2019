@@ -1,5 +1,5 @@
 require('dotenv').config()
-import createError from "http-errors";
+import { createError } from "http-json-errors"
 import express from "express";
 import { join } from "path";
 import cookieParser from "cookie-parser";
@@ -8,11 +8,8 @@ import morgan from "morgan";
 import indexRouter from "./routes/index";
 import personRouter from "./routes/personRouter";
 import  path from "path";
-import fs from "fs";
 import cors from "cors"
 import mongoose from "mongoose"
-
-
 const app = express();
 
 // view engine setup
@@ -20,7 +17,6 @@ app.set("views", join(__dirname, "views"));
 app.set("view engine", "pug");
 
 const URL = `${process.env.LOCALDATABASECONNECTION}/phonebook`;
-console.log(URL)
 
 export const connection =mongoose.connect(URL, {useNewUrlParser: true}).then(result => {
   console.log('connected to MongoDB');
@@ -28,9 +24,6 @@ export const connection =mongoose.connect(URL, {useNewUrlParser: true}).then(res
 .catch((error) => {
   console.log('error connecting to MongoDB:', error.message)
 });
-
-const data = fs.readFileSync("./db.json");
-export const db = JSON.parse(data);
 const loggingsyntax=':method :status :url :res'
 
 morgan.token("requestBody",(req, res, param)=>{return JSON.stringify(req.body)})
@@ -48,7 +41,7 @@ app.use("/api", personRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404));
+  throw next(createError(404));
 });
 
 // error handler
