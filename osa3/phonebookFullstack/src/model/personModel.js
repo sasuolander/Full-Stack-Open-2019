@@ -3,8 +3,8 @@ import mongoose from "mongoose"
 import validator from  "mongoose-unique-validator"
 import connection from "./../app"
 
-const person ={id:Number,
-name: String,
+const person ={
+name: {type:String,unique: true},
 phonenumber: String
 }
 

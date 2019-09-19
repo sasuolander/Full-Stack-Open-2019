@@ -13,15 +13,16 @@ const getAll =  () => {
         })
     })
 }
-const create = payload => {
+const save = payload => {
     return new Promise((resolve, reject)=>{
-        personModel.create(payload,(err,data)=>{
+        const newPerson=new personModel(payload)
+        newPerson.save((err)=>{
             if (err) reject(err)
-            resolve(data)
+            resolve(newPerson)
         })
     })
 }
 const update = (payload, id) => {};
 const remove = idParameter => {personModel.deleteOne({_id:idParameter},err=>{return error})};
 
-export default { getAll, create, update, remove };
+export default { getAll, save, update, remove };
