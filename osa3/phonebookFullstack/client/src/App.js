@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./css/App.css";
+import "./scss/App.scss";
 import { AddRecord } from "./component/AddRecord";
 import { FilterBar } from "./component/FilterBar";
 import { ListOfRecord } from "./component/ListOfRecord";
@@ -21,8 +21,6 @@ export const App = () => {
     [removedName, setRemovedName] = useState(""),
     [visibleAdded, setVisibilityAdded] = useState("none"),
     [addedName, setAddedName] = useState("");
-
-  const forceUpdate = useForceUpdate();
 
   useEffect(() => {
     personService.getAll().then(data => console.log(data));
@@ -69,12 +67,9 @@ export const App = () => {
     personService
       .remove(id)
       .then(response => {
-        const removedElement = persons.indexOf(id);
-        console.log(removedElement);
         try {
           let array = persons.filter((value, index, arr) => {
-            console.log("value", value);
-            return value.id == id;
+            return !(value.id === id);
           });
           setPersons(array);
         } catch (error) {
