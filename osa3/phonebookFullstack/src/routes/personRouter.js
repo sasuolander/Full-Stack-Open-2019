@@ -3,7 +3,7 @@ import express from "express";
 import personService from "./../service/personService";
 
 const router = express.Router();
-const { getAll, findByID, save, update, remove } = personService;
+const { getAll, findByID, save, remove } = personService;
 
 router.get("/persons", (req, res, next) => {
   getAll().then(
@@ -46,7 +46,6 @@ router.post("/persons/", (req, res, next) => {
   const newPerson = Object.assign(req.body),
     { name, phonenumber } = req.body,
     nameAndPhonenumberIsFound = name !== undefined && phonenumber !== undefined;
-
   if (nameAndPhonenumberIsFound) {
     save(newPerson).then(
       output => {
@@ -71,8 +70,8 @@ router.post("/persons/", (req, res, next) => {
     });
   }
 });
-//update
-//router.post("/person/:id", (req, res, next) => {});
+// update
+// router.post("/person/:id", (req, res, next) => {});
 
 router.delete("/persons/:id", (req, res, next) => {
   const { id } = req.params;

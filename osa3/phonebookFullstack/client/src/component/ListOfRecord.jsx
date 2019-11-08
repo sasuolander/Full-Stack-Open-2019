@@ -12,8 +12,7 @@ export const ListOfRecord = ({ persons,onClickRemovePerson }) => {
     );
   });
   return (
-    <React.Fragment>
-      <p>table</p>
+    <div className="person-table-body">
       <table>
         <thead>
         <tr>
@@ -26,6 +25,6 @@ export const ListOfRecord = ({ persons,onClickRemovePerson }) => {
         {list}
         </tbody>
       </table>
-    </React.Fragment>
+    </div>
   );
 };

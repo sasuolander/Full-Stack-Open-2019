@@ -9,7 +9,7 @@ import {
   AddedBanner
 } from "./component/AlertBanner";
 import personService from "./service/personService";
-import useForceUpdate from "use-force-update";
+
 
 export const App = () => {
   const [persons, setPersons] = useState([]),
@@ -87,8 +87,8 @@ export const App = () => {
   };
 
   return (
-    <React.Fragment>
-      <h1>phonebook app</h1>
+    <div className="main-app">
+    <header><h1>phonebook app</h1></header>
       <AlertBanner name={name} visible={visibleAlert} />
       <RemovedBanner name={removedName} visible={visibleRemove} />
       <AddedBanner name={addedName} visible={visibleAdded} />
@@ -105,6 +105,8 @@ export const App = () => {
         persons={persons.filter(person => person.name !== filter)}
         onClickRemovePerson={onClickRemovePerson}
       />
-    </React.Fragment>
+      <footer></footer>
+    </div>
+    
   );
 };

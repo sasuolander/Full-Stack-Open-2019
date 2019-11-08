@@ -24,7 +24,6 @@ export const connection =mongoose.connect(URL, {useNewUrlParser: true}).then(res
 .catch((error) => {
   console.log('error connecting to MongoDB:', error.message)
 });
-const loggingsyntax=':method :status :url :res'
 
 morgan.token("requestBody",(req, res, param)=>{return JSON.stringify(req.body)})
 

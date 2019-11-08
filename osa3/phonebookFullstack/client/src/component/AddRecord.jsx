@@ -2,7 +2,7 @@ import React from "react";
 
 export const AddRecord = ({ onClick, onChangeName,onChangePhonenumber,phonenumber,name }) => {
   return (
-    <div>
+    <div className="form-body">
       <form className="form">
         <div className="field-element">
           <label>name</label> <input onChange={onChangeName} id="name" value={name} />

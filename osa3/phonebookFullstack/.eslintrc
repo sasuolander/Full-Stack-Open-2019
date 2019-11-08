@@ -1,0 +1,14 @@
+{
+  "parser": "babel-eslint",
+    "extends": ["google","prettier"],
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {"ecmaVersion": 6},
+ 
+    "rules": {
+      //"strict": 0
+      // Additional, per-project rules...
+    }
+  }
