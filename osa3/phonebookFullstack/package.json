@@ -10,7 +10,8 @@
     "startAll": "concurrently --kill-others-on-fail \"npm run dev\" \"npm run client\"",
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
-    "prod": "NODE_ENV=production npm-run-all clean build server:prod",
+    "prod": "NODE_ENV=production npm-run-all clean build server",
+    "prodTest": "NODE_ENV=production npm-run-all server",
     "watch": "nodemon"
   },
   "dependencies": {

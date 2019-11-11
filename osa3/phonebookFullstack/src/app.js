@@ -16,7 +16,7 @@ const app = express();
 app.set("views", join(__dirname, "views"));
 app.set("view engine", "pug");
 
-const URL = `${process.env.LOCALDATABASECONNECTION}/phonebook`;
+const URL = `${process.env.DATABASECONNECTION}/phonebook`;
 
 export const connection =mongoose.connect(URL, {useNewUrlParser: true}).then(result => {
   console.log('connected to MongoDB');
@@ -33,15 +33,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json())
-app.use(express.static(join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, 'client/build')))
+app.use(express.static("public"));
 
-app.use("/", indexRouter);
+app.use("/apiInfo", indexRouter);
 app.use("/api", personRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   throw next(createError(404));
 });
+
+console.log(process.env.NODE_ENV)
 
 // error handler
 app.use((err, req, res, next) => {
@@ -55,10 +58,11 @@ app.use((err, req, res, next) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+  // app.use(express.static(path.join(__dirname, 'client/build')))
   app.get('*', (req,res) => {
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    res.sendFile(path.resolve( 'public'))
   })
+  console.log("test")
 }
 
 export default app;
