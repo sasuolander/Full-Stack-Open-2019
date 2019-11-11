@@ -24,7 +24,7 @@
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
     "http-json-errors": "^1.2.5",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.8",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.9.1",
     "normalize-port": "^1.0.0",
